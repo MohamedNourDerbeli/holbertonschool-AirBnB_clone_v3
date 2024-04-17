@@ -39,7 +39,8 @@ def state(state_id):
     return jsonify(state.to_dict())
 
 
-@app_views.route("/states/<state_id>", methods=["DELETE"], strict_slashes=False)
+@app_views.route("/states/<state_id>",
+                 methods=["DELETE"], strict_slashes=False)
 def delete_state(state_id):
     """
     :param state_id:
@@ -54,6 +55,7 @@ def delete_state(state_id):
 
     storage.delete(state)
     storage.save()
+    return jsonify({}), 200
 
 
 @app_views.route("/states", methods=["POST"], strict_slashes=False)
