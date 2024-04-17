@@ -86,7 +86,7 @@ def update_state(state_id):
     if state is None:
         abort(404)
 
-    data = request.get_json(silent=True)
+    data = request.get_json()
     if data is None:
         abort(400, "Not a JSON")
     for key, value in data.items():
