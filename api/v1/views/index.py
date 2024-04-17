@@ -30,3 +30,10 @@ def stats():
     }
 
     return jsonify(total_objects)
+
+@app_views.errorhandler(404)
+def not_found(error):
+    """
+    Return a 404 error
+    """
+    return jsonify({"error": "Not found"}), 404
