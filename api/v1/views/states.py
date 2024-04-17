@@ -72,9 +72,8 @@ def create_state():
         abort(400, "Missing name")
 
     new_state = State(**data)
-    storage.new(new_state)
     storage.save()
-    resp = jsonify(new_state.to_json())
+    resp = jsonify(new_state.to_dict())
     resp.status_code = 201
 
     return resp
