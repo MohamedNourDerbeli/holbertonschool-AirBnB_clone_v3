@@ -21,19 +21,12 @@ def stats():
     Return the number of objects by type
     """
     total_objects = {
-        "amenities": storage.count("Amenity"),
-        "cities": storage.count("City"),
-        "places": storage.count("Place"),
-        "reviews": storage.count("Review"),
-        "states": storage.count("State"),
-        "users": storage.count("User"),
+        "amenities": storage.count('Amenity'),
+        "cities": storage.count('City'),
+        "places": storage.count('Place'),
+        "reviews": storage.count('Review'),
+        "states": storage.count('State'),
+        "users": storage.count('User')
     }
 
     return jsonify(total_objects)
-
-@app_views.errorhandler(404)
-def not_found(error):
-    """
-    Return a 404 error
-    """
-    return jsonify({"error": "Not found"}), 404
