@@ -33,10 +33,10 @@ def state(state_id):
     a json representation of the state
     """
 
-    state = storage.get(State, state_id)
+    state_obj = storage.get(State, str(state_id))
     if state is None:
         abort(404)
-    return jsonify(state.to_dict())
+    return jsonify(state_obj.to_dict())
 
 
 @app_views.route("/states/<state_id>",
@@ -86,11 +86,11 @@ def update_state(state_id):
     if state is None:
         abort(404)
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
     for key, value in data.items():
         if key not in ["id", "created_at", "updated_at"]:
             setattr(state, key, value)
-    storage.save()
+    state.save()
     return jsonify(state.to_dict()), 200
