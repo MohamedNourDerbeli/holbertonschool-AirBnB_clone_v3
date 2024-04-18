@@ -33,13 +33,13 @@ def user_s(user_id):
                  methods=["DELETE"], strict_slashes=False)
 def delete_user(user_id):
     """delete user"""
-    user = storage.get(User, (user_id))
+    user = storage.get(User, user_id)
     if user is None:
         abort(404)
 
     storage.delete(user)
     storage.save()
-    return jsonify({}), 200
+    return jsonify({})
 
 
 @app_views.route("/users", methods=["POST"], strict_slashes=False)
@@ -51,9 +51,9 @@ def create_user():
     if "name" not in data:
         abort(400, "Missing name")
     if "email" not in data:
-        abort(400, "Missing email")
+        abort(400, 'Missing email')
     if "password" not in data:
-        abort(400, "Missing password")
+        abort(400, 'Missing password')
 
     new_user = User(**data)
     new_user.save()
@@ -78,4 +78,4 @@ def update_user(user_id):
         if key not in ["id", "created_at", "updated_at", "email"]:
             setattr(user, key, value)
     user.save()
-    return jsonify(user.to_dict()), 200
+    return jsonify(user.to_dict())
