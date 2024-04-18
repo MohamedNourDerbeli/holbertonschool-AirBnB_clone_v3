@@ -20,7 +20,7 @@ def users():
 
 @app_views.route("/users/<user_id>",
                  methods=["GET"], strict_slashes=False)
-def user(user_id):
+def user_s(user_id):
     """list user"""
 
     user = storage.get(User, user_id)
@@ -33,7 +33,7 @@ def user(user_id):
                  methods=["DELETE"], strict_slashes=False)
 def delete_user(user_id):
     """delete user"""
-    user = storage.get(User, user_id)
+    user = storage.get(User, (user_id))
     if user is None:
         abort(404)
 
