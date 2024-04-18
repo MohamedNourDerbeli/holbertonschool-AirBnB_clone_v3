@@ -85,7 +85,7 @@ def update_place(place_id):
     if data is None:
         abort(400, "Not a JSON")
     for key, value in data.items():
-        if key not in ["id", "created_at", "updated_at"]:
+        if key not in ["id", "created_at", "updated_at", "user_id", "city_id"]:
             setattr(place, key, value)
     place.save()
     return jsonify(place.to_dict()), 200
