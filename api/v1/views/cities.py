@@ -5,7 +5,7 @@ This module contains the city route
 from flask import jsonify, abort, request
 from api.v1.views import app_views, storage
 from models.state import State
-from models.state import City
+from models.city import City
 
 
 @app_views.route("/states/<state_id>/cities",
