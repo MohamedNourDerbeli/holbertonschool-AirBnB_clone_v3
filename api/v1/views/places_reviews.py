@@ -19,7 +19,7 @@ def reviews(place_id):
         abort(404)
     reviews_list = []
     for review in place.reviews:
-            reviews_list.append(review.to_dict())
+        reviews_list.append(review.to_dict())
     return jsonify(reviews_list)
 
 
