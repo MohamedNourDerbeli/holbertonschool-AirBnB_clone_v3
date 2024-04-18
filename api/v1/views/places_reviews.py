@@ -14,13 +14,13 @@ from models.review import Review
 def reviews(place_id):
     """get reviews objects"""
 
-    city = storage.get(Place, place_id)
-    if city is None:
+    place = storage.get(Place, place_id)
+    if place is None:
         abort(404)
     reviews = storage.all("Review")
     reviews_list = []
     for review in reviews.values():
-        if review.review_id == place_id:
+        if review.place_id == place_id:
             reviews_list.append(review.to_dict())
     return jsonify(reviews_list)
 
@@ -55,16 +55,16 @@ def create_reviews(place_id):
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
-    Place = storage.get(Place, place_id)
-    if Place is None:
+    place = storage.get(Place, place_id)
+    if place is None:
         abort(404)
     if "user_id" not in data:
-        abort(400, "Missing name")
-    if "name" not in data:
-        abort(400, "Missing name")
+        abort(400, "Missing user_id")
     user = storage.get(User, data["user_id"])
     if user is None:
         abort(404)
+    if "text" not in data:
+        abort(400, "Missing text")
     data["place_id"] = place_id
     data["user_id"] = user.id
 
