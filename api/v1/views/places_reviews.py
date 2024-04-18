@@ -66,8 +66,6 @@ def create_reviews(place_id):
     if "text" not in data:
         abort(400, "Missing text")
     data["place_id"] = place_id
-    data["user_id"] = user.id
-
     new_review = Review(**data)
     new_review.save()
     resp = jsonify(new_review.to_dict())
