@@ -18,19 +18,20 @@ User = models.user.User
 BaseModel = models.base_model.BaseModel
 FileStorage = engine.file_storage.FileStorage
 storage = models.storage
-F = './dev/file.json'
-storage_type = os.environ.get('HBNB_TYPE_STORAGE')
+F = "./dev/file.json"
+storage_type = os.environ.get("HBNB_TYPE_STORAGE")
 
-@unittest.skipIf(storage_type == 'db', 'skip if environ is db')
+
+@unittest.skipIf(storage_type == "db", "skip if environ is db")
 class TestBmFsInstances(unittest.TestCase):
     """testing for class instances"""
 
     @classmethod
     def setUpClass(cls):
-        print('\n\n.................................')
-        print('...... Testing FileStorate ......')
-        print('..... For FileStorage Class .....')
-        print('.................................\n\n')
+        print("\n\n.................................")
+        print("...... Testing FileStorate ......")
+        print("..... For FileStorage Class .....")
+        print(".................................\n\n")
 
     def setUp(self):
         """initializes new storage object for testing"""
@@ -40,7 +41,6 @@ class TestBmFsInstances(unittest.TestCase):
     def test_instantiation(self):
         """... checks proper FileStorage instantiation"""
         self.assertIsInstance(self.storage, FileStorage)
-
 
     def test_to_dict(self):
         """... to_dict should return serializable dict object"""
@@ -76,7 +76,7 @@ class TestBmFsInstances(unittest.TestCase):
         all_obj = new_storage.all()
         for k, v in all_obj.items():
             if bm_id in k:
-                if type(v).__name__ == 'BaseModel':
+                if type(v).__name__ == "BaseModel":
                     actual = 1
         self.assertTrue(1 == actual)
 
@@ -86,38 +86,38 @@ class TestUserFsInstances(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        print('\n\n.................................')
-        print('...... Testing FileStorage ......')
-        print('.......... User  Class ..........')
-        print('.................................\n\n')
+        print("\n\n.................................")
+        print("...... Testing FileStorage ......")
+        print(".......... User  Class ..........")
+        print(".................................\n\n")
 
     def setUp(self):
         """initializes new user for testing"""
         self.user = User()
         self.bm_obj = BaseModel()
 
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
+    @unittest.skipIf(storage_type == "db", "skip if environ is db")
     def test_storage_file_exists(self):
         """... checks proper FileStorage instantiation"""
 
         self.user.save()
         self.assertTrue(os.path.isfile("file.json"))
 
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
+    @unittest.skipIf(storage_type == "db", "skip if environ is db")
     def test_obj_saved_to_file(self):
         """... checks proper FileStorage instantiation"""
 
         self.user.save()
         u_id = self.user.id
         actual = 0
-        with open("file.json", mode='r', encoding='utf-8') as f_obj:
+        with open("file.json", mode="r", encoding="utf-8") as f_obj:
             storage_dict = json.load(f_obj)
         for k in storage_dict.keys():
             if u_id in k:
                 actual = 1
         self.assertTrue(1 == actual)
 
-    @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
+    @unittest.skipIf(storage_type == "db", "skip if environ is db")
     def test_reload(self):
         """... checks proper usage of reload function"""
 
@@ -133,7 +133,7 @@ class TestUserFsInstances(unittest.TestCase):
         self.assertTrue(1 == actual)
 
 
-@unittest.skipIf(storage_type == 'db', 'skip if environ is not db')
+@unittest.skipIf(storage_type == "db", "skip if environ is not db")
 class TestStorageGet(unittest.TestCase):
     """
     Testing `get()` method in DBStorage
@@ -144,10 +144,10 @@ class TestStorageGet(unittest.TestCase):
         """
         setup tests for class
         """
-        print('\n\n.................................')
-        print('...... Testing Get() Method ......')
-        print('.......... Place  Class ..........')
-        print('.................................\n\n')
+        print("\n\n.................................")
+        print("...... Testing Get() Method ......")
+        print(".......... Place  Class ..........")
+        print(".................................\n\n")
 
     def setUp(self):
         """
@@ -186,7 +186,7 @@ class TestStorageGet(unittest.TestCase):
         self.assertIsNone(result)
 
 
-@unittest.skipIf(storage_type == 'db', 'skip if environ is not db')
+@unittest.skipIf(storage_type == "db", "skip if environ is not db")
 class TestStorageCount(unittest.TestCase):
     """
     tests count() method in DBStorage
@@ -197,10 +197,10 @@ class TestStorageCount(unittest.TestCase):
         """
         setup tests for class
         """
-        print('\n\n.................................')
-        print('...... Testing Get() Method ......')
-        print('.......... Place  Class ..........')
-        print('.................................\n\n')
+        print("\n\n.................................")
+        print("...... Testing Get() Method ......")
+        print(".......... Place  Class ..........")
+        print(".................................\n\n")
 
     def setup(self):
         """
@@ -240,9 +240,11 @@ class TestStorageCount(unittest.TestCase):
         result = storage.count(cls=City)
 
         self.assertEqual(
-            int(1 if len(storage.all("City")) is None else
-                len(storage.all("City"))), result)
+            int(1 if len(storage.all("City"))
+                is None else len(storage.all("City"))),
+            result,
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main
