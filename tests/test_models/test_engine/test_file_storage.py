@@ -35,10 +35,8 @@ class TestFileStorageDocs(unittest.TestCase):
 
     def test_doc_file(self):
         """... documentation for the file"""
-        expected = (
-            "serializes instances to a JSON file \
+        expected = "serializes instances to a JSON file \
 & deserializes back to instances"
-        )
         actual = models.FileStorage.__doc__
         self.assertEqual(expected, actual)
 
