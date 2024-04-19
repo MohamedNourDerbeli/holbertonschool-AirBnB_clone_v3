@@ -30,43 +30,43 @@ class TestDBStorageDocs(unittest.TestCase):
 
     def test_doc_file(self):
         """... documentation for the file"""
-        expected = " Database engine "
+        expected = '\nContains the class DBStorage\n'
         actual = db_storage.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_class(self):
         """... documentation for the class"""
-        expected = "handles long term storage of all class instances"
+        expected = 'interaacts with the MySQL database'
         actual = DBStorage.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_all(self):
         """... documentation for all function"""
-        expected = " returns a dictionary of all objects "
+        expected = 'query on the current database session'
         actual = DBStorage.all.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_new(self):
         """... documentation for new function"""
-        expected = " adds objects to current database session "
+        expected = 'add the object to the current database session'
         actual = DBStorage.new.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_save(self):
         """... documentation for save function"""
-        expected = " commits all changes of current database session "
+        expected = 'commit all changes of the current database session'
         actual = DBStorage.save.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_reload(self):
         """... documentation for reload function"""
-        expected = " creates all tables in database & session from engine "
+        expected = 'reloads data from the databases'
         actual = DBStorage.reload.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_delete(self):
         """... documentation for delete function"""
-        expected = " deletes obj from current database session if not None "
+        expected = 'delete from the current database session obj if not None'
         actual = DBStorage.delete.__doc__
         self.assertEqual(expected, actual)
 
@@ -325,7 +325,7 @@ class TestStorageGet(unittest.TestCase):
         testing get() method
         :return: True if pass, False if not pass
         """
-        result = storage.get(cls="State", id=self.state.id)
+        result = storage.get(cls=State, id=self.state.id)
 
         self.assertIsInstance(result, State)
 
@@ -334,7 +334,7 @@ class TestStorageGet(unittest.TestCase):
         testing get() method for id match
         :return: True if pass, false if not pass
         """
-        result = storage.get(cls="State", id=str(self.state.id))
+        result = storage.get(cls=State, id=str(self.state.id))
 
         self.assertEqual(self.state.id, result.id)
 
