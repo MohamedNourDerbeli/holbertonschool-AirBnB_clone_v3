@@ -62,7 +62,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except:
+        except (ValueError, TypeError) as e:
             pass
 
     def get(self, cls, id):
@@ -88,7 +88,6 @@ class FileStorage:
             if self.__objects[key].__class__ == cls:
                 count += 1
         return count
-
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
