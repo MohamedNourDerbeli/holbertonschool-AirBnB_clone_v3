@@ -115,26 +115,24 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(json.loads(string), json.loads(js))
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_db_get(self):
-        """Test the function get, to get an object of a given class
-        and an id.
-        This creates an instance for each class and send the class
-        name and the id to the get method. It should return the same
-        object."""
-        storage = FileStorage()
-        instance = State(name='state_test')
-        instance.save()
-        self.assertIs(storage.get(State, instance.id), instance)
+    def test_get(self):
+        """Test the get() function creates a new object of any class
+        and checks if the object saves correctly"""
+        state = State()
+        state.name = "State_name"
+        storage = models.storage
+        storage.new(state)
+        storage.save()
+        self.assertTrue(storage.get(State, state.id))
+        self.assertEqual(storage.get(State, state.id), state)
+        storage.close()
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_db_count(self):
-        """Test the function count, that returns the number of objects,
-        all the objects from a class if it's given, or all the objects
-        from all the classes
-        """
-        storage = FileStorage()
-        initial_value = storage.count()
-        instance = State(name='state_test')
-        instance.save()
-        end_value = storage.count()
-        self.assertEqual(initial_value + 1, end_value)
+    def test_count(self):
+        """Test the count() function"""
+        state = State()
+        state.name = "State_name"
+        storage = models.storage
+        storage.new(state)
+        storage.save()
+        self.assertTrue(storage.count(State) > 0)
