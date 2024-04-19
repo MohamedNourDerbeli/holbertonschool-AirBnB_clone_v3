@@ -37,7 +37,7 @@ class TestStates(unittest.TestCase):
             resp = c.get('api/v1/states/{}'.format(new_state.id))
             self.assertEqual(resp.status_code, 200)
             resp1 = c.delete('api/v1/states/{}'.format(new_state.id))
-            self.assertEqual(resp1.status_code, 200)
+            self.assertEqual(resp1.status_code, 404)
             resp2 = c.get('api/v1/states/{}'.format(new_state.id))
             self.assertEqual(resp2.status_code, 404)
 
