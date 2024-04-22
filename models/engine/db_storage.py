@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
-Contains the class DBStorage
+Contains
+the class
+DBStorage
 """
 
 import models
@@ -27,13 +29,17 @@ classes = {
 
 
 class DBStorage:
-    """interaacts with the MySQL database"""
+    """interaacts
+    with the MySQL
+    database"""
 
     __engine = None
     __session = None
 
     def __init__(self):
-        """Instantiate a DBStorage object"""
+        """Instantiate a
+        DBStorage
+        object"""
         HBNB_MYSQL_USER = getenv("HBNB_MYSQL_USER")
         HBNB_MYSQL_PWD = getenv("HBNB_MYSQL_PWD")
         HBNB_MYSQL_HOST = getenv("HBNB_MYSQL_HOST")
@@ -48,7 +54,9 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """query on the current database session"""
+        """query on
+        the current
+        database session"""
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
@@ -59,22 +67,30 @@ class DBStorage:
         return new_dict
 
     def new(self, obj):
-        """add the object to the current database session"""
+        """add the object
+        to the current
+        database session"""
         self.__session.add(obj)
 
     def save(self):
-        """commit all changes of the current database session"""
+        """commit all
+        changes of the
+        current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete from the current database session obj if not None"""
+        """delete from the current
+        database session
+        obj if not None
+        """
         if obj is not None:
             self.__session.delete(obj)
 
     def get(self, cls, id):
         """
         Returns the object based on the class
-        and its ID, or None if not found
+        and its ID, or
+        None if not found
         """
         if cls not in classes.values():
             return None
@@ -86,7 +102,9 @@ class DBStorage:
 
     def count(self, cls=None):
         """
-        counts the number of objects in storage
+        counts the
+        number of
+        objects in storage
         """
         if cls is None:
             return len(self.all())
