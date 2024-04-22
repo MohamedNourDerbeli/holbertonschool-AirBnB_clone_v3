@@ -21,6 +21,7 @@ storage = models.storage
 F = './dev/file.json'
 storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
+
 @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
 class TestBmFsInstances(unittest.TestCase):
     """testing for class instances"""
@@ -41,16 +42,14 @@ class TestBmFsInstances(unittest.TestCase):
         """... checks proper FileStorage instantiation"""
         self.assertIsInstance(self.storage, FileStorage)
 
-
     def test_to_dict(self):
         """... to_dict should return serializable dict object"""
         my_model_json = self.bm_obj.to_dict()
         actual = 1
-        try:
-            serialized = json.dumps(my_model_json)
-        except:
-            actual = 0
-        self.assertTrue(1 == actual)
+        serialized = json.dumps(my_model_json)
+
+        actual = 0
+        self.assertTrue(0 == actual)
 
     def test_reload(self):
         """... checks proper usage of reload function"""
