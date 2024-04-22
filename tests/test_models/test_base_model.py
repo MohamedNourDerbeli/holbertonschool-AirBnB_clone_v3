@@ -117,10 +117,7 @@ class TestBaseModelInstances(unittest.TestCase):
         """... to_dict should return serializable dict object"""
         my_model_json = self.model.to_dict()
         actual = 1
-        try:
-            serialized = json.dumps(my_model_json)
-        except (ValueError, TypeError) as e:
-            actual = 0
+        serialized = json.dumps(my_model_json)
         self.assertTrue(1 == actual)
 
     @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
