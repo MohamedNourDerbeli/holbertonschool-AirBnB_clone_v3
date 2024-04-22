@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-Contains the class DBStorage
-"""
+"""Contains the class DBStorage"""
 
 import models
 from models.amenity import Amenity
@@ -72,10 +70,7 @@ class DBStorage:
             self.__session.delete(obj)
 
     def get(self, cls, id):
-        """
-        Returns the object based on the class
-        and its ID, or None if not found
-        """
+        """Returns the object based on the class"""
         if cls not in classes.values():
             return None
 
@@ -85,9 +80,7 @@ class DBStorage:
                 return value
 
     def count(self, cls=None):
-        """
-        counts the number of objects in storage
-        """
+        """counts the number of objects in storage"""
         if cls is None:
             return len(self.all())
         else:
