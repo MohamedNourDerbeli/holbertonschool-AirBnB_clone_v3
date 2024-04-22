@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""Contains the class DBStorage"""
+"""
+Contains the class DBStorage
+"""
 
 import models
 from models.amenity import Amenity
@@ -25,6 +27,8 @@ classes = {
 
 
 class DBStorage:
+    """interaacts with the MySQL database"""
+
     __engine = None
     __session = None
 
@@ -44,6 +48,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        """query on the current database session"""
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
@@ -54,16 +59,23 @@ class DBStorage:
         return new_dict
 
     def new(self, obj):
+        """add the object to the current database session"""
         self.__session.add(obj)
 
     def save(self):
+        """commit all changes of the current database session"""
         self.__session.commit()
 
     def delete(self, obj=None):
+        """delete from the current database session obj if not None"""
         if obj is not None:
             self.__session.delete(obj)
 
     def get(self, cls, id):
+        """
+        Returns the object based on the class
+        and its ID, or None if not found
+        """
         if cls not in classes.values():
             return None
 
@@ -73,16 +85,21 @@ class DBStorage:
                 return value
 
     def count(self, cls=None):
+        """
+        counts the number of objects in storage
+        """
         if cls is None:
             return len(self.all())
         else:
             return len(self.all(cls))
 
     def reload(self):
+        """reloads data from the databases"""
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
         self.__session = Session
 
     def close(self):
+        """call remove() method on the private session attribute"""
         self.__session.remove()
