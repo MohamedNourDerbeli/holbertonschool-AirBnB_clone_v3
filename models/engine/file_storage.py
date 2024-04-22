@@ -63,7 +63,6 @@ class FileStorage:
         for key in jo:
             self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
 
-
     def get(self, cls, id):
         """
         Returns the object based on the class
