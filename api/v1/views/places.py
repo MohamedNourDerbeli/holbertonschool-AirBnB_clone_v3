@@ -1,57 +1,56 @@
 #!/usr/bin/python3
-"""
-This module contains the city route
-"""
-from flask import jsonify, abort, request
-from api.v1.views import app_views, storage
-from models.place import Place
+""" New view for Place objects that handles all default RESTFul API actions"""
+from api.v1.views import app_views
+from models import storage
 from models.city import City
+from models.place import Place
 from models.user import User
+from flask import Flask, jsonify, abort, request
 
 
 @app_views.route("/cities/<city_id>/places",
                  methods=["GET"], strict_slashes=False)
-def places(city_id):
-    """get places objects"""
-
-    city = storage.get(City, city_id)
-    if city is None:
+def retrieve_places(city_id):
+    """Retrieve all Place objects"""
+    citiesdict = storage.get(City, city_id)
+    if citiesdict is None:
         abort(404)
-    places = storage.all("Place")
-    places_list = []
-    for place in places.values():
+    place_list = []
+    all_places = storage.all(Place)
+    for place in all_places.values():
         if place.city_id == city_id:
-            places_list.append(place.to_dict())
-    return jsonify(places_list)
+            place_list.append(place.to_dict())
+    return jsonify(place_list)
 
 
 @app_views.route("/places/<place_id>", methods=["GET"], strict_slashes=False)
-def place(place_id):
-    """get place object"""
-
-    place = storage.get(Place, place_id)
-    if place is None:
+def retrieve_place_object(place_id):
+    """Retrieve a Place object based on id"""
+    placesdict = storage.get(Place, place_id)
+    if placesdict is None:
         abort(404)
-    return jsonify(place.to_dict())
+    else:
+        placesdictjs = placesdict.to_dict()
+        return jsonify(placesdictjs)
 
 
 @app_views.route("/places/<place_id>",
                  methods=["DELETE"], strict_slashes=False)
-def delete_place(place_id):
-    """delete place object"""
-    place = storage.get(Place, place_id)
-    if place is None:
+def delete_place_object(place_id):
+    """deletes a Place object based on id"""
+    placesdict = storage.get(Place, place_id)
+    if not placesdict:
         abort(404)
+    else:
+        storage.delete(placesdict)
+        storage.save()
+        return jsonify({}), 200
 
-    storage.delete(place)
-    storage.save()
-    return jsonify({}), 200
 
-
-@app_views.route("cities/<city_id>/places",
+@app_views.route("/cities/<city_id>/places",
                  methods=["POST"], strict_slashes=False)
-def create_place(city_id):
-    """create place object"""
+def create_a_place(city_id):
+    """Creates a new Place object"""
     data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
@@ -67,25 +66,23 @@ def create_place(city_id):
         abort(404)
     data["city_id"] = city_id
     new_place = Place(**data)
-    new_place.save()
-    resp = jsonify(new_place.to_dict())
-    resp.status_code = 201
-
-    return resp
+    storage.save()
+    return jsonify(new_place.to_dict()), 201
 
 
 @app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
 def update_place(place_id):
-    """update a place object"""
-    place = storage.get(Place, place_id)
-    if place is None:
+    """Updates a Place object"""
+    ignored = ["id", "updated_at", "created_at", "user_id", "city_id"]
+    placesdict = storage.get(Place, place_id)
+    if not placesdict:
         abort(404)
-
-    data = request.get_json(silent=True)
-    if data is None:
-        abort(400, "Not a JSON")
-    for key, value in data.items():
-        if key not in ["id", "created_at", "updated_at", "user_id", "city_id"]:
-            setattr(place, key, value)
-    place.save()
-    return jsonify(place.to_dict()), 200
+    else:
+        data = request.get_json(silent=True)
+        if data is None:
+            return abort(400, "Not a JSON")
+        for key, value in data.items():
+            if key not in ignored:
+                setattr(placesdict, key, value)
+                storage.save()
+        return jsonify(placesdict.to_dict()), 200
