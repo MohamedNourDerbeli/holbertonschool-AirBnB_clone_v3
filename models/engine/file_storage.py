@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the FileStorage class .
+Contains the FileStorage class
 """
 
 import json
@@ -57,7 +57,6 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
-
         with open(self.__file_path, "r") as f:
             jo = json.load(f)
         for key in jo:
