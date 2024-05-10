@@ -1,13 +1,11 @@
 #!/usr/bin/python3
-"""
-This is the main file
-"""
+""" api file """
+
 from flask import Flask, jsonify
 from models import storage
-import os
 from api.v1.views import app_views
+import os
 from flask_cors import CORS
-
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
@@ -15,19 +13,9 @@ app.register_blueprint(app_views)
 
 
 @app.teardown_appcontext
-def close_storage(exception=None):
-    """
-    Closes the storage on teardown
-    """
+def teardown_storage(exception=None):
+    """Teardown method to close the storage."""
     storage.close()
-
-
-@app.errorhandler(404)
-def not_found(error):
-    """
-    Handle 404 error
-    """
-    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
